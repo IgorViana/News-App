@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    tools:layout_editor_absoluteY="25dp">
+    android:background="@color/colorLightPrimary">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/newsList"

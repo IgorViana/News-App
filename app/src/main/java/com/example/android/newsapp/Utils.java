@@ -141,8 +141,7 @@ public final class Utils {
     public static String turnDate (String oldDate){
         try {
             Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(oldDate);
-            String dateString = new SimpleDateFormat("dd/MM/yyyy").format(date);
-            return dateString;
+            return new SimpleDateFormat("dd/MM/yyyy").format(date);
         } catch (ParseException e) {
             Log.i("TESTE", e.toString());
         }
