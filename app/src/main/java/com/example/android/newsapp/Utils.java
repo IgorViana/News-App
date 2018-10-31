@@ -127,7 +127,6 @@ public final class Utils {
                 String author = currentTag.getString("webTitle");
                 String data = currentNews.getString("webPublicationDate");
                 String url = currentNews.getString("webUrl");
-
                 noticias.add(new News(R.drawable.theguardian_logo, title, section, turnDate(data), author, url));
             }
 
@@ -138,13 +137,14 @@ public final class Utils {
         // Return the list of News
         return noticias;
     }
+
     public static String turnDate (String oldDate){
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         try {
-            Date data = formato.parse(oldDate);
-            return formato.format(data);
+            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(oldDate);
+            String dateString = new SimpleDateFormat("dd/MM/yyyy").format(date);
+            return dateString;
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.i("TESTE", e.toString());
         }
         return oldDate;
     }
