@@ -112,10 +112,6 @@ public final class Utils {
 
         // Create an empty ArrayList that we can start adding earthquakes to
         ArrayList<News> noticias = new ArrayList<>();
-
-        // Try to parse the SAMPLE_JSON_RESPONSE. If there's a problem with the way the JSON
-        // is formatted, a JSONException exception object will be thrown.
-        // Catch the exception so the app doesn't crash, and print the error message to the logs.
         try {
 
             JSONObject news = new JSONObject(Json);
@@ -126,20 +122,20 @@ public final class Utils {
                 JSONObject currentNews = results.getJSONObject(i);
                 String title = currentNews.getString("webTitle");
                 String section = currentNews.getString("sectionName");
-                String author = currentNews.getString("sectionName");
+                JSONArray tag = currentNews.getJSONArray("tags");
+                JSONObject currentTag = tag.getJSONObject(0);
+                String author = currentTag.getString("webTitle");
                 String data = currentNews.getString("webPublicationDate");
+                String url = currentNews.getString("webUrl");
 
-                noticias.add(new News(R.drawable.ic_launcher_background, title, section, turnDate(data), author));
+                noticias.add(new News(R.drawable.theguardian_logo, title, section, turnDate(data), author, url));
             }
 
         } catch (JSONException e) {
-            // If an error is thrown when executing any of the above statements in the "try" block,
-            // catch the exception here, so the app doesn't crash. Print a log message
-            // with the message from the exception.
             Log.e("QueryUtils", "Problem parsing the earthquake JSON results", e);
         }
 
-        // Return the list of earthquakes
+        // Return the list of News
         return noticias;
     }
     public static String turnDate (String oldDate){

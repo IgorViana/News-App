@@ -3,6 +3,7 @@ package com.example.android.newsapp;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,18 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     private List<News> newsList;
     private LayoutInflater mInflater;
+    private NewsClickListener newsClickListener;
 
     public NewsAdapter(Context context, List<News> newsList){
         this.mInflater = LayoutInflater.from(context);
         this.newsList = newsList;
+        this.newsClickListener = null;
+    }
+
+    public NewsAdapter(Context context, List<News> newsList, NewsClickListener newsClickListener){
+        this.mInflater = LayoutInflater.from(context);
+        this.newsList = newsList;
+        this.newsClickListener = newsClickListener;
     }
 
     @NonNull
@@ -34,11 +43,22 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
         viewHolder.myNewsImage.setImageResource(currentNews.getNewsImageId());
         viewHolder.myNewsTitle.setText(currentNews.getNewsTitle());
+        //Put "..." if the text is too big
+        viewHolder.myNewsTitle.setEllipsize(TextUtils.TruncateAt.END);
         viewHolder.myNewsSection.setText(currentNews.getNewsSection());
         if(currentNews.getNewsData() != null) {
             viewHolder.myNewsData.setText(currentNews.getNewsData()); //conferir
             viewHolder.myNewsAuthor.setText(currentNews.getNewsAuthor());
         }
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(newsClickListener != null){
+                    newsClickListener.onNewsSelected(currentNews);
+                }
+            }
+        });
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.android.newsapp;
 
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -9,21 +10,26 @@ public class News {
     private String newsSection;
     private String newsData;
     private String newsAuthor;
+    private String webUrl;
 
-    public News(int newsImageId, String newsTitle, String newsSection) {
+
+    public News(int newsImageId, String newsTitle, String newsSection, String url) {
         this.newsImageId = newsImageId;
         this.newsTitle = newsTitle;
         this.newsSection = newsSection;
         this.newsData = null;
         this.newsAuthor = null;
+        this.webUrl = url;
+
     }
 
-    public News(int newsImageId, String newsTitle, String newsSection, String newsData, String newsAuthor) {
+    public News(int newsImageId, String newsTitle, String newsSection, String newsData, String newsAuthor, String url) {
         this.newsImageId = newsImageId;
         this.newsTitle = newsTitle;
         this.newsSection = newsSection;
         this.newsData = newsData;
         this.newsAuthor = newsAuthor;
+        this.webUrl = url;
     }
 
     public int getNewsImageId() {
@@ -46,5 +52,7 @@ public class News {
         return newsAuthor;
     }
 
-
+    public String getWebUrl() {
+        return webUrl;
+    }
 }
