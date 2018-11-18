@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Debug;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -25,19 +26,15 @@ import android.widget.TextView;
 import java.net.URI;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>>, NewsClickListener {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>>, NewsClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final int NEWS_LOADER_ID = 1;
     NewsAdapter adapter;
     RecyclerView recyclerView;
     private ProgressBar progressBar;
     private TextView emptyStateText;
+
     private static final String API_REQUEST_URL =
-            "https://content.guardianapis.com/search?show-tags=contributor&api-key=cef1da17-3c71-4283-83aa-2378810e845c";
-
-    private static final String API_REQUEST_URL_TESTE =
             "https://content.guardianapis.com/search?";
-
-    private static final String API_KEY = "cef1da17-3c71-4283-83aa-2378810e845c";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             if (networkInfo != null && networkInfo.isConnected()) {
                 LoaderManager loaderManager = getLoaderManager();
                 loaderManager.initLoader(NEWS_LOADER_ID, null, this);
+                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+                pref.registerOnSharedPreferenceChangeListener(this);
             } else {
                 progressBar.setVisibility(View.GONE);
                 emptyStateText.setText(R.string.NoInternet);
@@ -70,8 +69,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         String order_by = sharedPreferences.getString(
                 getString(R.string.settings_order_by_key),
                 getString(R.string.settings_order_by_default));
+        String apiKey = BuildConfig.THE_GUARDIAN_API_KEY;
 
-        Uri baseUri = Uri.parse(API_REQUEST_URL_TESTE);
+        Uri baseUri = Uri.parse(API_REQUEST_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
         uriBuilder.appendQueryParameter("show-tags", "contributor");
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             uriBuilder.appendQueryParameter("order-by", order_by);
         }
 
-        uriBuilder.appendQueryParameter("api-key", API_KEY);
+        uriBuilder.appendQueryParameter("api-key", apiKey);
         Log.i("API_URI", uriBuilder.toString());
 
         return new NewsLoader(this, uriBuilder.toString());
@@ -131,4 +131,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        getLoaderManager().restartLoader(NEWS_LOADER_ID, null, this);
+    }
 }

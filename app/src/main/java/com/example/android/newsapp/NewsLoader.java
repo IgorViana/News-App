@@ -10,10 +10,6 @@ import java.util.List;
 public class NewsLoader extends AsyncTaskLoader<List<News>> {
     private String stringUrl;
 
-    public NewsLoader(@NonNull Context context) {
-        super(context);
-        this.stringUrl = null;
-    }
     public NewsLoader(@NonNull Context context, String url) {
         super(context);
         this.stringUrl = url;

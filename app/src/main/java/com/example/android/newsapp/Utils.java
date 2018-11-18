@@ -66,7 +66,7 @@ public final class Utils {
             httpURLConnection.connect();
             httpURLConnection.getResponseCode();
 
-            if (httpURLConnection.getResponseCode() == 200) {
+            if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 inputStream = httpURLConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             } else {
@@ -123,13 +123,18 @@ public final class Utils {
                 String title = currentNews.getString("webTitle");
                 String section = currentNews.getString("sectionName");
                 JSONArray tag = currentNews.getJSONArray("tags");
-                JSONObject currentTag = tag.getJSONObject(0);
                 String author = null;
-                if(currentTag != null) {
-                   author = currentTag.getString("webTitle");
-                }
+                if(tag.length() > 0) {
+                    JSONObject currentTag = tag.getJSONObject(0);
 
-                String data = currentNews.getString("webPublicationDate");
+
+                    if (currentTag.has("webTitle"))
+                        author = currentTag.getString("webTitle");
+                }
+                String data = null;
+                if (currentNews.has("webPublicationDate"))
+                    data = currentNews.getString("webPublicationDate");
+
                 String url = currentNews.getString("webUrl");
                 noticias.add(new News(R.drawable.theguardian_logo, title, section, turnDate(data), author, url));
             }

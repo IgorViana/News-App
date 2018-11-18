@@ -13,16 +13,6 @@ public class News {
     private String webUrl;
 
 
-    public News(int newsImageId, String newsTitle, String newsSection, String url) {
-        this.newsImageId = newsImageId;
-        this.newsTitle = newsTitle;
-        this.newsSection = newsSection;
-        this.newsData = null;
-        this.newsAuthor = null;
-        this.webUrl = url;
-
-    }
-
     public News(int newsImageId, String newsTitle, String newsSection, String newsData, String newsAuthor, String url) {
         this.newsImageId = newsImageId;
         this.newsTitle = newsTitle;
