@@ -124,7 +124,11 @@ public final class Utils {
                 String section = currentNews.getString("sectionName");
                 JSONArray tag = currentNews.getJSONArray("tags");
                 JSONObject currentTag = tag.getJSONObject(0);
-                String author = currentTag.getString("webTitle");
+                String author = null;
+                if(currentTag != null) {
+                   author = currentTag.getString("webTitle");
+                }
+
                 String data = currentNews.getString("webPublicationDate");
                 String url = currentNews.getString("webUrl");
                 noticias.add(new News(R.drawable.theguardian_logo, title, section, turnDate(data), author, url));
